@@ -29,7 +29,6 @@ TODO
 
 ```shell
 docker buildx build \
-  --log-opt max-size=50m \
   -f ./docker/$TARGET.Dockerfile \
   -t ink-toolchain:dev \
   .

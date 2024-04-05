@@ -1,15 +1,13 @@
-name: Build
+name: Release
 
 on:
   push:
-    branches: [ main ]
-    paths: [ .github/workflows/build.yml, config/**, docker/**, scripts/**]
-  pull_request:
-    branches: [ main ]
-    paths: [ .github/workflows/build.yml, config/**, docker/**, scripts/**]
+    tags:
+      - "v**"
   workflow_dispatch:
 
-permissions: { }
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -34,8 +32,7 @@ jobs:
         with:
           context: ./
           file: ./docker/${{ matrix.target }}.Dockerfile
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          no-cache: true
           pull: true
           push: false
           tags: ink-toolchain:dev
@@ -43,9 +40,18 @@ jobs:
           builder: ${{ steps.buildx.outputs.name }}
       - name: Extract
         run: TARGETARCH='${{ matrix.platform }}' ./scripts/extract.sh
-      - name: Artifact
-        uses: actions/upload-artifact@v4
+      - name: Rename
+        shell: bash
+        working-directory: ./export
+        run: for f in *.tar.gz; do mv "$f" "${{ matrix.platform }}+$f"; done
+      - name: Hash
+        shell: bash
+        working-directory: ./export
+        run: for f in *.tar.gz; do sha256sum "$f" > "$f".sha256; done
+      - name: Create and push artifacts to release
+        uses: ncipollo/release-action@v1
         with:
-          name: "${{ matrix.platform }}+${{ matrix.target }}"
-          path: |
-            export/${{ matrix.target }}.tar.gz
+          tag: ${{ github.ref_name }}
+          name: ${{ github.ref_name }}
+          allowUpdates: true
+          artifacts: "./export/*.tar.gz,./export/*.sha256"
