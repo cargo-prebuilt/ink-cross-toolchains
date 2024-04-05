@@ -13,15 +13,33 @@ Cross compiling toolchains meant for [ink-cross-images](https://github.com/cargo
 
 #### Versions
 
-| Rust Target                | GCC Target         | GCC    | BinUtils | Musl  | Linux Kernel |
-|----------------------------|--------------------|--------|----------|-------|--------------|
-| aarch64-unknown-linux-musl | aarch64-linux-musl | 12.3.0 | 2.40     | 1.2.4 | 5.4.248      |
-| armv7-unknown-linux-musl   | arm-linux-musl     | 12.3.0 | 2.40     | 1.2.4 | 5.4.248      |
-| x86_64-unknown-linux-musl  | x86_64-linux-musl  | 12.3.0 | 2.40     | 1.2.4 | 5.4.248      |
+| Target (Rust/LLVM)             | GCC Target           | GCC    | BinUtils | Musl  | Linux Kernel |
+|--------------------------------|----------------------|--------|----------|-------|--------------|
+| aarch64-unknown-linux-musl     | aarch64-linux-musl   | 12.3.0 | 2.40     | 1.2.4 | 5.4.248      |
+| armv7-unknown-linux-musleabihf | arm-linux-musleabihf | 12.3.0 | 2.40     | 1.2.4 | 5.4.248      |
+| x86_64-unknown-linux-musl      | x86_64-linux-musl    | 12.3.0 | 2.40     | 1.2.4 | 5.4.248      |
 
 ## Download and Install
 
 TODO
+
+## Building
+
+### Build
+
+```shell
+docker buildx build \
+  --log-opt max-size=50m \
+  -f ./docker/$TARGET.Dockerfile \
+  -t ink-toolchain:dev \
+  .
+```
+
+### Extract
+
+```shell
+./scripts/extract.sh
+```
 
 ## Acknowledgements
 

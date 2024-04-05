@@ -2,7 +2,10 @@
 /.idea
 /.vscode
 
+export
+
 *.tmp
 *.log
+*.tar.gz
 
 .DS_Store
