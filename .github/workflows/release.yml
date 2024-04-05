@@ -35,6 +35,7 @@ jobs:
           no-cache: true
           pull: true
           push: false
+          load: true
           tags: ink-toolchain:dev
           platforms: linux/${{ matrix.platform }}
           builder: ${{ steps.buildx.outputs.name }}

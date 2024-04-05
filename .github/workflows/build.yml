@@ -38,6 +38,7 @@ jobs:
           cache-to: type=gha,mode=max
           pull: true
           push: false
+          load: true
           tags: ink-toolchain:dev
           platforms: linux/${{ matrix.platform }}
           builder: ${{ steps.buildx.outputs.name }}
