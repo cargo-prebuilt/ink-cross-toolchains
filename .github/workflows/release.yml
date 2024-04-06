@@ -14,7 +14,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ amd64, arm64 ]
+        cross:
+          - aarch64-linux-gnu
+          - x86_64-linux-gnu
         target:
           - aarch64-unknown-linux-musl
           - armv7-unknown-linux-musleabihf
@@ -22,6 +24,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Space?
+        run: docker system prune --all
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
         with:
@@ -39,14 +43,16 @@ jobs:
           push: false
           load: true
           tags: ink-toolchain:dev
-          platforms: linux/${{ matrix.platform }}
+          build-args: |
+            CCONFIG=x86_64-linux-gnu---${{ matrix.cross }}
+          platforms: linux/amd64
           builder: ${{ steps.buildx.outputs.name }}
       - name: Extract
-        run: TARGETARCH='${{ matrix.platform }}' ./scripts/extract.sh
+        run: ./scripts/extract.sh
       - name: Rename
         shell: bash
         working-directory: ./export
-        run: for f in *.tar.gz; do mv "$f" "${{ matrix.platform }}+$f"; done
+        run: for f in *.tar.gz; do mv "$f" "${{ matrix.cross }}+$f"; done
       - name: Hash
         shell: bash
         working-directory: ./export
@@ -56,5 +62,6 @@ jobs:
         with:
           tag: ${{ github.ref_name }}
           name: ${{ github.ref_name }}
+          prerelease: ${{ contains('-dev', github.ref_name) }}
           allowUpdates: true
           artifacts: "./export/*.tar.gz,./export/*.sha256"
