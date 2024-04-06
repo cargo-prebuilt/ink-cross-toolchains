@@ -6,10 +6,10 @@ Cross compiling toolchains meant for [ink-cross-images](https://github.com/cargo
 
 ### 2024.01 (Upcoming)
 
-#### Platform Support
+#### Host Platform Support
 
-- aarch64-unknown-linux-gnu
-- x86_64-unknown-linux-gnu
+- aarch64-linux-gnu
+- x86_64-linux-gnu
 
 #### Versions
 

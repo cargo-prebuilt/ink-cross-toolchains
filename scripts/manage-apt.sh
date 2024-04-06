@@ -31,4 +31,8 @@ apt install -y \
     meson \
     ninja-build
 
+apt install -y \
+    g++-aarch64-linux-gnu \
+    g++-x86-64-linux-gnu
+
 rm -rf /var/lib/apt/lists/*

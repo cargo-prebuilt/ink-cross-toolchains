@@ -18,6 +18,8 @@ RUN --mount=type=bind,source=./scripts/manage-apt.sh,target=/run.sh /run.sh
 RUN --mount=type=bind,source=./scripts/build-crosstool.sh,target=/run.sh /run.sh
 
 COPY ./config/${RUST_TARGET}.config /.config
+ARG CCONFIG=""
+COPY ./cconfig/${CCONFIG}.config /.cconfig
 RUN --mount=type=bind,source=./scripts/build-cross.sh,target=/run.sh /run.sh
 
 RUN --mount=type=bind,source=./scripts/package.sh,target=/run.sh /run.sh

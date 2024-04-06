@@ -3,10 +3,10 @@ name: Build
 on:
   push:
     branches: [ main ]
-    paths: [ .github/workflows/build.yml, config/**, docker/**, scripts/**]
+    paths: [ .github/workflows/build.yml, cconfig/**, config/**, docker/**, scripts/**]
   pull_request:
     branches: [ main ]
-    paths: [ .github/workflows/build.yml, config/**, docker/**, scripts/**]
+    paths: [ .github/workflows/build.yml, cconfig/**, config/**, docker/**, scripts/**]
   workflow_dispatch:
 
 permissions: { }
@@ -16,7 +16,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [ amd64, arm64 ]
+        cross:
+          - aarch64-linux-gnu
+          - x86_64-linux-gnu
         target:
           - aarch64-unknown-linux-musl
           - armv7-unknown-linux-musleabihf
@@ -42,13 +44,15 @@ jobs:
           push: false
           load: true
           tags: ink-toolchain:dev
-          platforms: linux/${{ matrix.platform }}
+          build-args: |
+            CCONFIG=x86_64-linux-gnu---${{ matrix.cross }}
+          platforms: linux/amd64
           builder: ${{ steps.buildx.outputs.name }}
       - name: Extract
-        run: TARGETARCH='${{ matrix.platform }}' ./scripts/extract.sh
+        run: ./scripts/extract.sh
       - name: Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: "${{ matrix.platform }}+${{ matrix.target }}"
+          name: "${{ matrix.cross }}+${{ matrix.target }}"
           path: |
             export/*.tar.gz
