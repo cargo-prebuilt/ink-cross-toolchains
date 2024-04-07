@@ -19,10 +19,13 @@ jobs:
         cross:
           - aarch64-linux-gnu
           - x86_64-linux-gnu
-        target:
-          - aarch64-unknown-linux-musl
-          - armv7-unknown-linux-musleabihf
-          - x86_64-unknown-linux-musl
+        include:
+          - target: aarch64-unknown-linux-musl
+            toolchain: aarch64-linux-musl
+          - target: armv7-unknown-linux-musleabihf
+            toolchain: arm-linux-musleabihf
+          - target: x86_64-unknown-linux-musl
+            toolchain: x86_64-linux-musl
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -45,14 +48,14 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: ./
-          file: ./docker/${{ matrix.target }}.Dockerfile
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          file: ./docker/.Dockerfile
           pull: true
           push: false
           load: true
           tags: ink-toolchain:dev
           build-args: |
+            RUST_TARGET=${{ matrix.target }}
+            CROSS_TOOLCHAIN=${{ matrix.toolchain }}
             CCONFIG=x86_64-linux-gnu---${{ matrix.cross }}
           platforms: linux/amd64
           builder: ${{ steps.buildx.outputs.name }}

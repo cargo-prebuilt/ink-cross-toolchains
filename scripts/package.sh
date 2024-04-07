@@ -3,7 +3,7 @@
 set -euxo pipefail
 
 # Package
-pushd /tmp/toolchain
+pushd /usr
 
 tar -czvf "$CROSS_TOOLCHAIN".tar.gz "$CROSS_TOOLCHAIN"
 
