@@ -12,4 +12,4 @@ ct-ng olddefconfig
 ct-ng build
 
 popd
-rm -rf /temp/build
+rm -rf /tmp/build

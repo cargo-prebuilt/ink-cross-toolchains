@@ -18,4 +18,4 @@ make install
 popd
 
 popd
-rm -rf /temp/buildcrosstool
+rm -rf /tmp/buildcrosstool
