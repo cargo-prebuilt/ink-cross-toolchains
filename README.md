@@ -15,11 +15,13 @@ Cross compiling toolchains meant for [ink-cross-images](https://github.com/cargo
 
 #### Versions
 
+TODO: Bundle zlib and musl
+
 | Target (Rust/LLVM)             | GCC Target           | GCC    | BinUtils | Musl  | Linux Kernel |
 |--------------------------------|----------------------|--------|----------|-------|--------------|
-| aarch64-unknown-linux-musl     | aarch64-linux-musl   | 12.3.0 | 2.40     | 1.2.4 | 5.4.248      |
-| armv7-unknown-linux-musleabihf | arm-linux-musleabihf | 12.3.0 | 2.40     | 1.2.4 | 5.4.248      |
-| x86_64-unknown-linux-musl      | x86_64-linux-musl    | 12.3.0 | 2.40     | 1.2.4 | 5.4.248      |
+| aarch64-unknown-linux-musl     | aarch64-linux-musl   | 12.3.0 | 2.42     | 1.2.4 | 5.4.260      |
+| armv7-unknown-linux-musleabihf | arm-linux-musleabihf | 12.3.0 | 2.42     | 1.2.4 | 5.4.260      |
+| x86_64-unknown-linux-musl      | x86_64-linux-musl    | 12.3.0 | 2.42     | 1.2.4 | 5.4.260      |
 
 ## Download and Install
 
