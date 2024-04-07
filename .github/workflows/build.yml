@@ -19,7 +19,7 @@ jobs:
         cross:
           - aarch64-linux-gnu
           - x86_64-linux-gnu
-        include:
+        build:
           - target: aarch64-unknown-linux-musl
             toolchain: aarch64-linux-musl
           - target: armv7-unknown-linux-musleabihf
@@ -54,8 +54,8 @@ jobs:
           load: true
           tags: ink-toolchain:dev
           build-args: |
-            RUST_TARGET=${{ matrix.target }}
-            CROSS_TOOLCHAIN=${{ matrix.toolchain }}
+            RUST_TARGET=${{ matrix.build.target }}
+            CROSS_TOOLCHAIN=${{ matrix.build.toolchain }}
             CCONFIG=x86_64-linux-gnu---${{ matrix.cross }}
           platforms: linux/amd64
           builder: ${{ steps.buildx.outputs.name }}
@@ -64,6 +64,6 @@ jobs:
       - name: Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: "${{ matrix.cross }}+${{ matrix.target }}"
+          name: "${{ matrix.cross }}+${{ matrix.build.target }}"
           path: |
             export/*.tar.gz
